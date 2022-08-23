@@ -43,6 +43,7 @@ async function run(){
         const userCollection = client.db('doctors_web').collection('users')
         const doctorCollection = client.db('doctors_web').collection('doctors')
         const paymentsCollection = client.db('doctors_web').collection('payments')
+        const reviewsCollection = client.db('doctors_web').collection('reviews')
 
         // verify admin
         const verifyAdmin = async(req ,res, next)=> {
@@ -218,6 +219,18 @@ async function run(){
           const email = req.params.email;
           const filter = {email: email}
           const result = await doctorCollection.deleteOne(filter)
+          res.send(result)
+        })
+
+        // review
+
+        app.get('/reviews', async(req, res)=>{
+          const review = await reviewsCollection.find().toArray()
+          res.send(review)
+        })
+        app.post('/reviews', async(req, res)=>{
+          const review = req.body;
+          const result = await reviewsCollection.insertOne(review)
           res.send(result)
         })
     
